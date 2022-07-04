@@ -1,0 +1,29 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = "centos/7"
+  
+  config.vm.define "dbennieS" do |control|
+    control.vm.hostname = "dbennieS"
+    control.vm.network "private_network", ip: "192.168.42.110"
+    control.vm.provider "virtualbox" do |v|
+      v.name = "dbennieS"
+      v.memory = 1024
+      v.cpus = 1
+    end
+    control.vm.provision "file", source: "~/.ssh/id_rsa", destination: "/tmp/id_rsa"
+    control.vm.provision "file", source: "~/.ssh/id_rsa.pub", destination: "/tmp/id_rsa.pub"
+    control.vm.provision "shell", path: "scripts/install_k3s_server.sh"
+  end
+
+  config.vm.define "dbennieSW" do |control|
+    control.vm.hostname = "dbennieSW"
+    control.vm.network "private_network", ip: "192.168.42.111"
+    control.vm.provider "virtualbox" do |v|
+      v.name = "dbennieSW"
+      v.memory = 1024
+      v.cpus = 1
+    end
+    control.vm.provision "file", source: "~/.ssh/id_rsa", destination: "/tmp/id_rsa"
+    control.vm.provision "file", source: "~/.ssh/id_rsa.pub", destination: "tmp/id_rsa.pub"
+    control.vm.provision "shell", path: "scripts/install_k3s_agent.sh"
+  end
+end

@@ -1,0 +1,3 @@
+write-kubeconfig-mode: 644
+flannel-iface: eth1
+node-ip: 192.168.42.110
